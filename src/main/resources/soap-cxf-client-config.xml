@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/3.1/mule-http.xsd
+       http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/3.1/mule-cxf.xsd
+        ">
+
+    <description>Provides a RESTful service to generate a random number</description>
+
+    <flow name="HTTP to SOAP Bridge">
+
+        <http:inbound-endpoint host="localhost" port="8080" path="service"/>
+        <cxf:jaxws-client
+                clientClass="com.mulesoft.refcard.FooService"
+                wsdlLocation="classpath:/wsdl/hello_world.wsdl"
+                operation="greetMe"/>
+    </flow>
+
+</mule>

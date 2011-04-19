@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+      xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+      xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp"
+      
+      xmlns:file="http://www.mulesoft.org/schema/mule/file"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
+        http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/3.1/mule-vm.xsd
+        http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/3.1/mule-jms.xsd
+        http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/3.1/mule-smtp.xsd
+        
+        http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/3.1/mule-file.xsd
+        ">
+
+    <description>Demonstrate Mule Configuration Elements</description>
+
+    <jms:connector name="jmsConnector"
+                   connectionFactory-ref="connectionFactory"
+                   username="guest"
+                   password="guest"/>
+
+    <file:connector name="fileConnector" streaming="true"/>
+
+    <smtp:connector name="smtpConnector"
+                    fromAddress="user@foo.com"
+                    bccAddresses="admins@foo.com"
+                    subject="A Message from Mule" />
+
+    <notifications>
+        <notification event="COMPONENT-MESSAGE"/>
+        <notification-listener ref="componentMessageListener"/>
+    </notifications>
+
+    <flow name="Route messages dynamically using a message property">
+        <vm:inbound-endpoint path="input"/>
+        <vm:outbound-endpoint path="#[header:INBOUND:destination-queue]"/>
+    </flow>
+
+    <simple-service name="random-number-service"
+                    address="http://localhost:8080/rest"
+                    component-class="com.mulesoft.refcard.RandomNumberResource"
+                    type="jax-rs"/>
+
+</mule>

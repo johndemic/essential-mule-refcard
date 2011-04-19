@@ -1,0 +1,32 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation=
+               "http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                http://www.springframework.org/schema/util
+                http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                ">
+
+    <util:map id="jmsProperties">
+        <entry key="host" value="localhost"/>
+        <entry key="port" value="5447"/>
+    </util:map>
+
+    <bean name="transportConfiguration"
+          class="org.hornetq.api.core.TransportConfiguration">
+        <constructor-arg value="org.hornetq.core.remoting.impl.netty.NettyConnectorFactory"/>
+        <constructor-arg ref="jmsProperties"/>
+    </bean>
+
+    <bean name="connectionFactory"
+          class="org.hornetq.jms.client.HornetQConnectionFactory">
+        <constructor-arg ref="transportConfiguration"/>
+        <property name="minLargeMessageSize" value="10000"/>
+        <property name="cacheLargeMessagesClient" value="false"/>
+        <property name="reconnectAttempts" value="-1"/>
+        <property name="retryInterval" value="5000"/>
+        <property name="consumerWindowSize" value="0"/>
+    </bean>
+
+</beans>

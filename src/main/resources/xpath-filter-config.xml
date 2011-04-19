@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml"
+      xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
+        http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/3.1/mule-xml.xsd
+        http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/3.1/mule-vm.xsd
+        ">
+
+    <description>Filter messages using XPath</description>
+
+    <flow name="Filter messages using the XPath filter">
+        <vm:inbound-endpoint path="input"/>
+        <mulexml:xpath-filter pattern="/order/zipCode" expectedValue="11209"/>
+        <vm:outbound-endpoint path="output"/>
+    </flow>
+
+
+</mule>

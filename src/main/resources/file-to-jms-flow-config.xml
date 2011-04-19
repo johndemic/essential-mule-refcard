@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:file="http://www.mulesoft.org/schema/mule/file"
+      xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
+        http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/3.1/mule-file.xsd
+        http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/3.1/mule-jms.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        ">
+
+    <description>Reads a file from a directory and uses the file contents as the payload of a JMS message</description>
+
+    <jms:connector name="jmsConnector"
+                   connectionFactory-ref="connectionFactory"
+                   username="guest"
+                   password="guest"/>
+
+
+    <flow name="File to JMS Message">
+        <file:inbound-endpoint path="data/files">
+            <byte-array-to-string-transformer/>
+        </file:inbound-endpoint>
+        <jms:outbound-endpoint queue="output"/>
+    </flow>
+
+</mule>

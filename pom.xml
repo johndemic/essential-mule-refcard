@@ -12,7 +12,7 @@
     <description>Mule Examples for the dZone Refcard</description>
 
     <properties>
-        <mule.version>3.1.1</mule.version>
+        <mule.version>3.5.0</mule.version>
         <hornetq.version>2.1.1.Final</hornetq.version>
         <!-- Tools properties -->
         <eclipsePluginVersion>2.5</eclipsePluginVersion>
